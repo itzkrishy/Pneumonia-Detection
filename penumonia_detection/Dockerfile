@@ -1,6 +1,15 @@
 # Use an official Python runtime as a parent image
 FROM python:3.9-slim
 
+# Install system dependencies required by opencv-python
+RUN apt-get update && apt-get install -y \
+    libgl1-mesa-glx \
+    libsm6 \
+    libxext6 \
+    libfontconfig1 \
+    libxrender1 \
+    && rm -rf /var/lib/apt/lists/*
+
 # Set the working directory in the container
 WORKDIR /app
 

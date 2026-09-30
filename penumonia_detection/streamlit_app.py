@@ -105,13 +105,13 @@ if model is not None:
         # Read file as bytes
         image_bytes = uploaded_file.getvalue()
 
-        st.image(image_bytes, caption='Uploaded Image', use_column_width=True)
-        st.write("")
-        st.write("Classifying...")
-
         processed_image = preprocess_image(image_bytes, target_size=(224, 224), n_channels=3)
 
         if processed_image is not None:
+            st.image(processed_image, caption='Uploaded Image', use_column_width=True)
+            st.write("")
+            st.write("Classifying...")
+
             # Add batch dimension for prediction
             input_tensor = np.expand_dims(processed_image, axis=0)
 

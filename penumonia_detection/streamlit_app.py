@@ -39,7 +39,9 @@ def preprocess_image(image_bytes, target_size=(224, 224), n_channels=3):
     try:
         # Attempt to read as DICOM first
         try:
-            dicom_data = dcm.dcmread(io.BytesIO(image_bytes))
+            dicom_data = dcm.dcmread(io.BytesIO(image_bytes), force=True)
+            if "PixelData" not in dicom_data:
+                raise dcm.errors.InvalidDicomError("DICOM file has no pixel data")
             img_array = dicom_data.pixel_array
 
             if img_array.ndim == 4:
@@ -65,9 +67,14 @@ def preprocess_image(image_bytes, target_size=(224, 224), n_channels=3):
                 img_array = np.zeros_like(img_array)
             img_array = img_array.astype(np.uint8) # Convert to uint8 for OpenCV
 
-        except dcm.errors.InvalidDicomError:
+        except (dcm.errors.InvalidDicomError, EOFError):
             # If not DICOM, try as a regular image (PNG, JPEG, etc.)
-            img = Image.open(io.BytesIO(image_bytes)).convert('L') # Convert to grayscale
+            try:
+                img = Image.open(io.BytesIO(image_bytes)).convert('L') # Convert to grayscale
+            except (OSError, ValueError) as image_error:
+                raise ValueError(
+                    "Unable to decode this file. Upload a valid DICOM, PNG, or JPEG image."
+                ) from image_error
             img_array = np.array(img)
 
         # Resize using OpenCV for better quality

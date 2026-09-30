@@ -117,7 +117,7 @@ if model is not None:
         processed_image = preprocess_image(image_bytes, target_size=(224, 224), n_channels=3)
 
         if processed_image is not None:
-            st.image(processed_image, caption='Uploaded Image', use_column_width=True)
+            st.image(processed_image, caption='Uploaded Image', width="stretch")
             st.write("")
             st.write("Classifying...")
 

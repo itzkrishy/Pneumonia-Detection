@@ -67,13 +67,15 @@ def preprocess_image(image_bytes, target_size=(224, 224), n_channels=3):
                 img_array = np.zeros_like(img_array)
             img_array = img_array.astype(np.uint8) # Convert to uint8 for OpenCV
 
-        except (dcm.errors.InvalidDicomError, EOFError):
+        except (dcm.errors.InvalidDicomError, EOFError) as dicom_error:
             # If not DICOM, try as a regular image (PNG, JPEG, etc.)
             try:
                 img = Image.open(io.BytesIO(image_bytes)).convert('L') # Convert to grayscale
             except (OSError, ValueError) as image_error:
                 raise ValueError(
-                    "Unable to decode this file. Upload a valid DICOM, PNG, or JPEG image."
+                    "Unable to decode this file as DICOM "
+                    f"({type(dicom_error).__name__}: {dicom_error}) or as PNG/JPEG "
+                    f"({type(image_error).__name__}: {image_error})."
                 ) from image_error
             img_array = np.array(img)
 

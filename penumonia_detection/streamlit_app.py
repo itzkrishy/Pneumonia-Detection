@@ -6,9 +6,10 @@ import pydicom as dcm
 import cv2
 from PIL import Image
 import io
+from pathlib import Path
 
 # Define the path to the saved best model (relative to the app's root)
-MODEL_PATH = 'best_fine_tuned_resnet50_model.keras'
+MODEL_PATH = Path(__file__).resolve().parent.parent / 'best_fine_tuned_resnet50_model.keras'
 
 # Define the focal loss function (must be available when loading the model)
 def focal_loss(gamma=2.0, alpha=0.25):

@@ -99,9 +99,18 @@ def preprocess_image(image_bytes, target_size=(224, 224), n_channels=3):
         return None
 
 # Streamlit app layout
-st.set_page_config(page_title="Pneumonia Detection", layout="wide")
+st.set_page_config(page_title="PulmoVision", layout="wide")
 
-st.title("Pneumonia Detection from Chest X-ray Images")
+st.markdown(
+    """
+    <div style="text-align: center;">
+        <h1 style="margin-bottom: 0.2em;">PulmoVision</h1>
+        <h4 style="margin-top: 0; color: #666;">Pneumonia Detection from Chest X-ray Images</h4>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 st.write("Upload a chest X-ray image (DICOM, PNG, or JPG) to predict if it shows signs of Lung Opacity.")
 
 # Load the model
@@ -129,13 +138,20 @@ if model is not None:
 
             # Define the optimized threshold
             threshold = 0.3
+            confidence = max(prediction_prob, 1 - prediction_prob) * 100
 
             # Classify based on threshold
             if prediction_prob >= threshold:
-                st.error(f"Prediction: Lung Opacity (Pneumonia Detected) with probability {prediction_prob:.2f}")
+                st.error(
+                    f"Prediction: Lung Opacity (Pneumonia Detected) | "
+                    f"Probability: {prediction_prob:.2f} | Confidence: {confidence:.0f}%"
+                )
             else:
-                st.success(f"Prediction: Normal (No Lung Opacity Detected) with probability {prediction_prob:.2f}")
+                st.success(
+                    f"Prediction: Normal (No Lung Opacity Detected) | "
+                    f"Probability: {prediction_prob:.2f} | Confidence: {confidence:.0f}%"
+                )
 
-            st.write(f"*Note: A probability above {threshold:.2f} is classified as Lung Opacity.*")
+            st.write(f"*Note: A probability above {threshold:.2f} is classified as Lung Opacity. Confidence reflects how far the predicted probability is from 0.5.*")
 else:
     st.warning("Model could not be loaded. Please check the model path and file.")

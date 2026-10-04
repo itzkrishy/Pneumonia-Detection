@@ -139,8 +139,9 @@ st.markdown(
 st.markdown(
     """
     <div style="text-align: center;">
-        <h1 style="margin-bottom: 0.2em;">PulmoVision</h1>
-        <h4 style="margin-top: 0; color: #666;">Pneumonia Detection from Chest X-ray Images</h4>
+        <h1 style="margin-bottom: 0.15em; color: #0f172a; font-size: 2.8rem; line-height: 1.1; font-weight: 800;">PulmoVision</h1>
+        <div style="width: 180px; height: 4px; background: linear-gradient(90deg, #60a5fa 0%, #2563eb 100%); border-radius: 999px; margin: 0 auto 0.55rem auto; opacity: 0.8;"></div>
+        <h4 style="margin-top: 0; color: #475569;">Pneumonia Detection from Chest X-ray Images</h4>
     </div>
     """,
     unsafe_allow_html=True,

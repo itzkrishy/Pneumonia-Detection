@@ -155,6 +155,19 @@ if model is not None:
             opacity_percentage = prediction_prob * 100
             confidence = max(prediction_prob, 1 - prediction_prob) * 100
 
+            if opacity_percentage >= 70:
+                risk_level = "High"
+                risk_bg = "#fee2e2"
+                risk_color = "#b91c1c"
+            elif opacity_percentage >= 40:
+                risk_level = "Moderate"
+                risk_bg = "#fef3c7"
+                risk_color = "#b45309"
+            else:
+                risk_level = "Low"
+                risk_bg = "#dcfce7"
+                risk_color = "#15803d"
+
             # Classify based on threshold
             if prediction_prob >= threshold:
                 badge_bg = "#fdecea"
@@ -192,10 +205,26 @@ if model is not None:
                         </div>
                         <div style="display: grid; gap: 0.8rem;">
                             <div style="padding: 0.8rem 0.9rem; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; color: #1d4ed8; font-weight: 600;">
-                                Lung Opacity Probability: <strong>{opacity_percentage:.1f}%</strong>
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>Lung Opacity Probability</span>
+                                    <strong>{opacity_percentage:.1f}%</strong>
+                                </div>
+                                <div style="height: 10px; width: 100%; background: #dbeafe; border-radius: 999px; overflow: hidden;">
+                                    <div style="height: 100%; width: {opacity_percentage:.1f}%; background: linear-gradient(90deg, #60a5fa 0%, #2563eb 100%); border-radius: inherit;"></div>
+                                </div>
                             </div>
                             <div style="padding: 0.8rem 0.9rem; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; color: #334155; font-weight: 600;">
-                                Confidence: <strong>{confidence:.1f}%</strong>
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>Confidence</span>
+                                    <strong>{confidence:.1f}%</strong>
+                                </div>
+                                <div style="height: 10px; width: 100%; background: #e2e8f0; border-radius: 999px; overflow: hidden;">
+                                    <div style="height: 100%; width: {confidence:.1f}%; background: linear-gradient(90deg, #94a3b8 0%, #475569 100%); border-radius: inherit;"></div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 0.8rem; background: {risk_bg}; border: 1px solid {risk_color}; border-radius: 10px; color: {risk_color}; font-weight: 700;">
+                                <span>Risk Level</span>
+                                <span>{risk_level}</span>
                             </div>
                         </div>
                     </div>

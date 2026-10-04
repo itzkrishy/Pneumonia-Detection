@@ -121,9 +121,20 @@ st.markdown(
             background-image:
                 linear-gradient(rgba(148, 163, 184, 0.18) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(148, 163, 184, 0.18) 1px, transparent 1px),
-                radial-gradient(circle at center, rgba(15, 23, 42, 0.08) 0%, rgba(15, 23, 42, 0.02) 35%, transparent 70%);
-            background-size: 28px 28px, 28px 28px, 100% 100%;
-            opacity: 0.28;
+                radial-gradient(circle at center, rgba(15, 23, 42, 0.08) 0%, rgba(15, 23, 42, 0.02) 35%, transparent 70%),
+                radial-gradient(ellipse at center, rgba(96, 165, 250, 0.12) 0%, rgba(96, 165, 250, 0) 55%);
+            background-size: 28px 28px, 28px 28px, 100% 100%, 100% 100%;
+            opacity: 0.42;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .stApp::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='420' viewBox='0 0 700 420'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cpath d='M240 90c-18 0-32 14-32 32v174c0 18 14 32 32 32h220c18 0 32-14 32-32V122c0-18-14-32-32-32H240zm52 38h116c20 0 36 16 36 36v108c0 20-16 36-36 36H292c-20 0-36-16-36-36V164c0-20 16-36 36-36z' fill='rgba(59,130,246,0.09)'/%3E%3Cpath d='M292 164h116v108H292z' fill='rgba(59,130,246,0.06)'/%3E%3Cpath d='M210 142c16 0 28 12 28 28v82c0 16-12 28-28 28s-28-12-28-28v-82c0-16 12-28 28-28zm280 0c16 0 28 12 28 28v82c0 16-12 28-28 28s-28-12-28-28v-82c0-16 12-28 28-28zM330 90v240M370 90v240M290 206h120M290 246h120M290 286h120' stroke='rgba(30,41,59,0.10)' stroke-width='6' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E") center/cover no-repeat;
+            opacity: 0.7;
             pointer-events: none;
             z-index: 0;
         }

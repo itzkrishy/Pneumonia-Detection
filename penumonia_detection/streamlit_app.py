@@ -138,19 +138,35 @@ if model is not None:
 
             # Define the optimized threshold
             threshold = 0.3
+            opacity_percentage = prediction_prob * 100
             confidence = max(prediction_prob, 1 - prediction_prob) * 100
 
             # Classify based on threshold
             if prediction_prob >= threshold:
-                st.error(
-                    f"Prediction: Lung Opacity (Pneumonia Detected) | "
-                    f"Probability: {prediction_prob:.2f} | Confidence: {confidence:.0f}%"
-                )
+                badge_color = "#b71c1c"  # deep red for abnormal finding
+                label = "Lung Opacity (Pneumonia Detected)"
+                icon = "⚠️"
             else:
-                st.success(
-                    f"Prediction: Normal (No Lung Opacity Detected) | "
-                    f"Probability: {prediction_prob:.2f} | Confidence: {confidence:.0f}%"
-                )
+                badge_color = "#1b5e20"  # deep green for normal finding
+                label = "Normal (No Lung Opacity Detected)"
+                icon = "✅"
+
+            st.markdown(
+                f"""
+                <div style="display: flex; align-items: center; gap: 12px; margin-top: 1rem; flex-wrap: wrap;">
+                    <span style="display: inline-block; padding: 8px 14px; background-color: {badge_color}; color: white; border-radius: 999px; font-weight: 600; font-size: 1rem;">
+                        {icon} {label}
+                    </span>
+                    <span style="display: inline-block; padding: 8px 14px; background-color: #e8f0fe; color: #1f1f1f; border-radius: 999px; font-weight: 600;">
+                        Lung Opacity Probability: {opacity_percentage:.1f}%
+                    </span>
+                    <span style="display: inline-block; padding: 8px 14px; background-color: #f3f4f6; color: #1f1f1f; border-radius: 999px; font-weight: 600;">
+                        Confidence: {confidence:.1f}%
+                    </span>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
             st.write(f"*Note: A probability above {threshold:.2f} is classified as Lung Opacity. Confidence reflects how far the predicted probability is from 0.5.*")
 else:

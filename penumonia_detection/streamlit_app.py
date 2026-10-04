@@ -117,6 +117,24 @@ st.write("Upload a chest X-ray image (DICOM, PNG, or JPG) to predict if it shows
 model = load_pneumonia_model()
 
 if model is not None:
+    st.markdown(
+        """
+        <div style="margin: 1rem 0 1.5rem 0; padding: 0.9rem 1rem; background: linear-gradient(135deg, #f8fafc 0%, #eef6ff 100%); border: 1px solid #dbeafe; border-radius: 12px; max-width: 520px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+                <div>
+                    <div style="font-size: 0.76rem; letter-spacing: 0.08em; text-transform: uppercase; color: #475569; font-weight: 700;">Model Status</div>
+                    <div style="font-size: 1rem; font-weight: 700; color: #0f172a; margin-top: 4px;">PulmoVision Ready</div>
+                </div>
+                <span style="display: inline-flex; align-items: center; padding: 6px 10px; background: #ecfdf5; color: #166534; border: 1px solid #a7f3d0; border-radius: 999px; font-size: 0.8rem; font-weight: 700;">● Active</span>
+            </div>
+            <div style="margin-top: 0.75rem; font-size: 0.9rem; color: #334155;">
+                Threshold: <strong>0.30</strong> · Input types: <strong>DICOM, PNG, JPG</strong>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
     uploaded_file = st.file_uploader("Choose an image...", type=["dcm", "png", "jpg", "jpeg"]) # Allow DICOM uploads
 
     if uploaded_file is not None:
@@ -143,24 +161,26 @@ if model is not None:
 
             # Classify based on threshold
             if prediction_prob >= threshold:
-                badge_color = "#b71c1c"  # deep red for abnormal finding
+                badge_bg = "#fdecea"
+                badge_color = "#b42318"
                 label = "Lung Opacity (Pneumonia Detected)"
                 icon = "⚠️"
             else:
-                badge_color = "#1b5e20"  # deep green for normal finding
+                badge_bg = "#ecfdf3"
+                badge_color = "#027a48"
                 label = "Normal (No Lung Opacity Detected)"
                 icon = "✅"
 
             st.markdown(
                 f"""
                 <div style="display: flex; align-items: center; gap: 12px; margin-top: 1rem; flex-wrap: wrap;">
-                    <span style="display: inline-block; padding: 8px 14px; background-color: {badge_color}; color: white; border-radius: 999px; font-weight: 600; font-size: 1rem;">
+                    <span style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background-color: {badge_bg}; color: {badge_color}; border: 1px solid {badge_color}; border-radius: 10px; font-weight: 700; font-size: 0.95rem; box-shadow: 0 1px 2px rgba(16,24,40,0.06);">
                         {icon} {label}
                     </span>
-                    <span style="display: inline-block; padding: 8px 14px; background-color: #e8f0fe; color: #1f1f1f; border-radius: 999px; font-weight: 600;">
+                    <span style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background-color: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; border-radius: 10px; font-weight: 600; font-size: 0.92rem; box-shadow: 0 1px 2px rgba(16,24,40,0.04);">
                         Lung Opacity Probability: {opacity_percentage:.1f}%
                     </span>
-                    <span style="display: inline-block; padding: 8px 14px; background-color: #f3f4f6; color: #1f1f1f; border-radius: 999px; font-weight: 600;">
+                    <span style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background-color: #f8fafc; color: #334155; border: 1px solid #cbd5e1; border-radius: 10px; font-weight: 600; font-size: 0.92rem; box-shadow: 0 1px 2px rgba(16,24,40,0.04);">
                         Confidence: {confidence:.1f}%
                     </span>
                 </div>
@@ -168,6 +188,6 @@ if model is not None:
                 unsafe_allow_html=True,
             )
 
-            st.write(f"*Note: A probability above {threshold:.2f} is classified as Lung Opacity. Confidence reflects how far the predicted probability is from 0.5.*")
+            st.write(f"*Note: A lung opacity probability above {threshold * 100:.0f}% is classified as Lung Opacity. Confidence reflects how far the predicted probability is from 50%.*")
 else:
     st.warning("Model could not be loaded. Please check the model path and file.")

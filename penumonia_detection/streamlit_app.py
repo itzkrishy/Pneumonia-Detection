@@ -144,10 +144,6 @@ if model is not None:
         processed_image = preprocess_image(image_bytes, target_size=(224, 224), n_channels=3)
 
         if processed_image is not None:
-            st.image(processed_image, caption='Uploaded Image', width=300)
-            st.write("")
-            st.write("Classifying...")
-
             # Add batch dimension for prediction
             input_tensor = np.expand_dims(processed_image, axis=0)
 
@@ -171,23 +167,42 @@ if model is not None:
                 label = "Normal (No Lung Opacity Detected)"
                 icon = "✅"
 
-            st.markdown(
-                f"""
-                <div style="display: flex; align-items: center; gap: 12px; margin-top: 1rem; flex-wrap: wrap;">
-                    <span style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background-color: {badge_bg}; color: {badge_color}; border: 1px solid {badge_color}; border-radius: 10px; font-weight: 700; font-size: 0.95rem; box-shadow: 0 1px 2px rgba(16,24,40,0.06);">
-                        {icon} {label}
-                    </span>
-                    <span style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background-color: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; border-radius: 10px; font-weight: 600; font-size: 0.92rem; box-shadow: 0 1px 2px rgba(16,24,40,0.04);">
-                        Lung Opacity Probability: {opacity_percentage:.1f}%
-                    </span>
-                    <span style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background-color: #f8fafc; color: #334155; border: 1px solid #cbd5e1; border-radius: 10px; font-weight: 600; font-size: 0.92rem; box-shadow: 0 1px 2px rgba(16,24,40,0.04);">
-                        Confidence: {confidence:.1f}%
-                    </span>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            col1, col2 = st.columns([1.1, 1.5])
 
-            st.write(f"*Note: A lung opacity probability above {threshold * 100:.0f}% is classified as Lung Opacity. Confidence reflects how far the predicted probability is from 50%.*")
+            with col1:
+                st.markdown(
+                    """
+                    <div style="background: linear-gradient(135deg, #f8fafc 0%, #edf2ff 100%); border: 1px solid #dbeafe; border-radius: 16px; padding: 1rem; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);">
+                        <div style="font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #475569; font-weight: 700; margin-bottom: 0.5rem;">Uploaded Image</div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+                st.image(processed_image, width=300)
+                st.markdown("</div>", unsafe_allow_html=True)
+
+            with col2:
+                st.markdown(
+                    f"""
+                    <div style="background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.2rem; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);">
+                        <div style="font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: #475569; font-weight: 700; margin-bottom: 0.8rem;">Prediction Summary</div>
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 1rem;">
+                            <span style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background-color: {badge_bg}; color: {badge_color}; border: 1px solid {badge_color}; border-radius: 10px; font-weight: 700; font-size: 0.95rem;">
+                                {icon} {label}
+                            </span>
+                        </div>
+                        <div style="display: grid; gap: 0.8rem;">
+                            <div style="padding: 0.8rem 0.9rem; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; color: #1d4ed8; font-weight: 600;">
+                                Lung Opacity Probability: <strong>{opacity_percentage:.1f}%</strong>
+                            </div>
+                            <div style="padding: 0.8rem 0.9rem; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; color: #334155; font-weight: 600;">
+                                Confidence: <strong>{confidence:.1f}%</strong>
+                            </div>
+                        </div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+
+                st.write(f"*Note: A lung opacity probability above {threshold * 100:.0f}% is classified as Lung Opacity. Confidence reflects how far the predicted probability is from 50%.*")
 else:
     st.warning("Model could not be loaded. Please check the model path and file.")

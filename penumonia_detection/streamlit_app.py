@@ -103,6 +103,41 @@ st.set_page_config(page_title="PulmoVision", layout="wide")
 
 st.markdown(
     """
+    <style>
+        .main > div {
+            background: linear-gradient(135deg, rgba(239,246,255,0.88), rgba(248,250,252,0.96));
+        }
+        .stApp {
+            background:
+                linear-gradient(rgba(255,255,255,0.45), rgba(255,255,255,0.45)),
+                radial-gradient(circle at 20% 20%, rgba(96,165,250,0.18), transparent 22%),
+                radial-gradient(circle at 80% 30%, rgba(148,163,184,0.10), transparent 18%),
+                linear-gradient(135deg, #f8fafc 0%, #eff6ff 55%, #f8fafc 100%);
+        }
+        .stApp::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(148, 163, 184, 0.18) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(148, 163, 184, 0.18) 1px, transparent 1px),
+                radial-gradient(circle at center, rgba(15, 23, 42, 0.08) 0%, rgba(15, 23, 42, 0.02) 35%, transparent 70%);
+            background-size: 28px 28px, 28px 28px, 100% 100%;
+            opacity: 0.28;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .stApp > * {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown(
+    """
     <div style="text-align: center;">
         <h1 style="margin-bottom: 0.2em;">PulmoVision</h1>
         <h4 style="margin-top: 0; color: #666;">Pneumonia Detection from Chest X-ray Images</h4>

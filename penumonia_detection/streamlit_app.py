@@ -142,6 +142,15 @@ st.markdown(
             position: relative;
             z-index: 1;
         }
+        .title-panel {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            border-radius: 18px;
+            padding: 0.8rem 1.2rem 0.5rem 1.2rem;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+        }
     </style>
     """,
     unsafe_allow_html=True,
@@ -149,9 +158,9 @@ st.markdown(
 
 st.markdown(
     """
-    <div style="text-align: center;">
-        <h1 style="margin-bottom: 0.2em;">PulmoVision</h1>
-        <h4 style="margin-top: 0; color: #666;">Pneumonia Detection from Chest X-ray Images</h4>
+    <div class="title-panel" style="text-align: center; margin: 0 auto 1rem auto;">
+        <h1 style="margin-bottom: 0.2em; position: relative; z-index: 2;">PulmoVision</h1>
+        <h4 style="margin-top: 0; color: #666; position: relative; z-index: 2;">Pneumonia Detection from Chest X-ray Images</h4>
     </div>
     """,
     unsafe_allow_html=True,
